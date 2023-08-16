@@ -9,15 +9,21 @@ fun SelectorStatus (
     viewModel: MainViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.collectAsState()
-    when (state.value.status) {
-        is ApplicationStatus.Error -> TODO()
-        ApplicationStatus.Loading -> TODO()
+    when (val result = state.value.status) {
+        is ApplicationStatus.Error -> {
+            ErrorScreen(error = result.error)
+        }
+        ApplicationStatus.Loading -> {
+            LoadingScreen()
+        }
         ApplicationStatus.Mock -> {
             MockScreen(
                 content = state.value.answer,
                 onClick = { viewModel.setAnswer() }
             )
         }
-        is ApplicationStatus.Succsess -> TODO()
+        is ApplicationStatus.Succsess -> {
+
+        }
     }
 }
