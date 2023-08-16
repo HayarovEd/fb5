@@ -23,7 +23,7 @@ fun SelectorStatus (
             )
         }
         is ApplicationStatus.Succsess -> {
-
+            WebScreen()
         }
     }
 }
