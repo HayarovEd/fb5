@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id ("com.google.gms.google-services")
+   // id ("com.google.gms.google-services")
     id ("kotlin-kapt")
     id ("dagger.hilt.android.plugin")
 }
@@ -77,6 +77,7 @@ dependencies {
     implementation ("com.google.dagger:hilt-android:2.45")
     annotationProcessor ("com.google.dagger:hilt-compiler:2.45")
     kapt ("com.google.dagger:hilt-compiler:2.45")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
 
     /*implementation ("com.facebook.android:facebook-android-sdk:5.0.0")
     implementation ("com.google.android.gms:play-services-ads-identifier:18.0.1")

@@ -1,0 +1,23 @@
+package com.edurda77.fb5.presentation
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.hilt.navigation.compose.hiltViewModel
+
+@Composable
+fun SelectorStatus (
+    viewModel: MainViewModel = hiltViewModel()
+) {
+    val state = viewModel.state.collectAsState()
+    when (state.value.status) {
+        is ApplicationStatus.Error -> TODO()
+        ApplicationStatus.Loading -> TODO()
+        ApplicationStatus.Mock -> {
+            MockScreen(
+                content = state.value.answer,
+                onClick = { viewModel.setUnswer() }
+            )
+        }
+        is ApplicationStatus.Succsess -> TODO()
+    }
+}
