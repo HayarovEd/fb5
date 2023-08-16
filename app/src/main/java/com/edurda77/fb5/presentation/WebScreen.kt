@@ -1,13 +1,11 @@
 package com.edurda77.fb5.presentation
 
-import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Environment
-import android.provider.MediaStore
-import android.util.Log
 import android.view.ViewGroup
 import android.webkit.CookieManager
+import android.webkit.MimeTypeMap
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebView
@@ -26,10 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import java.io.File
-import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.Date
 
 private var mCameraPhotoPath = ""
 private var mCapturedImageURI: Uri = Uri.parse("")
@@ -39,7 +33,7 @@ private var mUploadMessage: ValueCallback<Uri?>? = null
 @Composable
 fun WebScreen(
     modifier: Modifier = Modifier,
-    url: String = "https://ya.ru/",
+    url: String,
 ) {
     val activityResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
@@ -72,10 +66,19 @@ fun WebScreen(
                         filePathCallback: ValueCallback<Array<Uri>>?,
                         fileChooserParams: FileChooserParams?
                     ): Boolean {
+                        val acceptTypes = fileChooserParams!!.acceptTypes
+                        val allowMultiple =
+                            fileChooserParams!!.mode === FileChooserParams.MODE_OPEN_MULTIPLE
+                        val captureEnabled = fileChooserParams.isCaptureEnabled
                         return startPickerIntent(
-                            filePath = filePathCallback,
+                            callback = filePathCallback,
+                            acceptTypes = acceptTypes,
+                            allowMultiple = allowMultiple,
+                            captureEnabled = captureEnabled,
                             activityResultLauncher = activityResultLauncher,
+                            context = context
                         )
+
                     }
 
 
@@ -110,60 +113,64 @@ fun WebScreen(
 }
 
 private fun startPickerIntent(
-    filePath: ValueCallback<Array<Uri>>?,
+    callback: ValueCallback<Array<Uri>>?,
+    acceptTypes: Array<String>,
+    allowMultiple: Boolean?,
+    captureEnabled: Boolean?,
     activityResultLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>,
+    context: Context
 ): Boolean {
-    if (mFilePathCallback != null) {
-        mFilePathCallback!!.onReceiveValue(null)
-    }
-    mFilePathCallback = filePath
-    var takePictureIntent: Intent? = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-    var photoFile: File? = null
-    try {
-        photoFile = createImageFile()
-        takePictureIntent?.putExtra("PhotoPath", mCameraPhotoPath)
-    } catch (ex: IOException) {
-        // Error occurred while creating the File
-        Log.e("ErrorCreatingFile", "Unable to create Image File", ex)
-    }
-
-    // Continue only if the File was successfully created
-    if (photoFile != null) {
-        mCameraPhotoPath = "file:" + photoFile.absolutePath
-        takePictureIntent?.putExtra(
-            MediaStore.EXTRA_OUTPUT,
-            Uri.fromFile(photoFile)
-        )
-    } else {
-        takePictureIntent = null
-    }
-    val contentSelectionIntent = Intent(Intent.ACTION_GET_CONTENT)
-    contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE)
-    contentSelectionIntent.type = "image/*"
-    val intentArray: Array<Intent?> =
-        takePictureIntent?.let { arrayOf(it) } ?: arrayOfNulls(0)
-    val chooserIntent = Intent(Intent.ACTION_CHOOSER)
-    chooserIntent.putExtra(Intent.EXTRA_INTENT, contentSelectionIntent)
-    chooserIntent.putExtra(Intent.EXTRA_TITLE, "Image Chooser")
-    chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray)
-    activityResultLauncher.launch(chooserIntent)
-    return true
+    mFilePathCallback = callback;
+    /* val extraIntents = ArrayList<Parcelable>()
+     extraIntents.add(getPhotoIntent(
+         activityResultLauncher = activityResultLauncher,
+         context = context))*/
+    val fileSelectionIntent = getFileChooserIntent(acceptTypes, allowMultiple)
+    val pickerIntent = Intent(Intent.ACTION_CHOOSER)
+    pickerIntent.putExtra(Intent.EXTRA_INTENT, fileSelectionIntent);
+    //pickerIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents.toTypedArray());
+    activityResultLauncher.launch(pickerIntent)
+    return true;
 }
 
-@SuppressLint("SimpleDateFormat")
-@Throws(IOException::class)
-private fun createImageFile(): File {
-    // Create an image file name
-    val timeStamp =
-        SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-    val imageFileName = "JPEG_" + timeStamp + "_"
-    val storageDir = Environment.getExternalStoragePublicDirectory(
-        Environment.DIRECTORY_PICTURES
-    )
-    return File.createTempFile(
-        imageFileName,  /* prefix */
-        ".jpg",  /* suffix */
-        storageDir /* directory */
-    )
+private fun getFileChooserIntent(
+    acceptTypes: Array<String>,
+    allowMultiple: Boolean?
+): Intent {
+    val intent = Intent(Intent.ACTION_GET_CONTENT)
+    intent.addCategory(Intent.CATEGORY_OPENABLE)
+    intent.type = "*/*"
+    intent.putExtra(Intent.EXTRA_MIME_TYPES, getAcceptedMimeType(acceptTypes))
+    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, allowMultiple)
+    return intent
+}
+
+private fun getAcceptedMimeType(types: Array<String>): Array<String?>? {
+    if (types.isEmpty()) {
+        val DEFAULT_MIME_TYPES = "*/*";
+        return arrayOf<String?>(DEFAULT_MIME_TYPES)
+    }
+    val mimeTypes = arrayOfNulls<String>(types.size)
+    for (i in types.indices) {
+        val t = types[i]
+        val regex = Regex("\\.\\w+")
+        if (t.matches(regex)) {
+            val oldValue = ".";
+            val newValue = "";
+            val mimeType = getMimeTypeFromExtension(t.replace(oldValue, newValue))
+            mimeTypes[i] = mimeType
+        } else {
+            mimeTypes[i] = t
+        }
+    }
+    return mimeTypes
+}
+
+private fun getMimeTypeFromExtension(extension: String?): String? {
+    var type: String? = null
+    if (extension != null) {
+        type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+    }
+    return type
 }
 

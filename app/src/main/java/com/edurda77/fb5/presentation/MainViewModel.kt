@@ -20,7 +20,7 @@ class MainViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     init {
-        getFromLocal()
+        //getFromLocal()
     }
 
     private fun getFromLocal(
@@ -40,7 +40,7 @@ class MainViewModel @Inject constructor(
                 }
             } else {
                 if (checkedInternetConnection) {
-                    val remoteConfig = FirebaseRemoteConfig.getInstance()
+                    /*val remoteConfig = FirebaseRemoteConfig.getInstance()
                     val configSettings = FirebaseRemoteConfigSettings.Builder()
                         .setMinimumFetchIntervalInSeconds(3600)
                         .build()
@@ -84,7 +84,7 @@ class MainViewModel @Inject constructor(
                                 )
                                     .updateStateUI()
                             }
-                        }
+                        }*/
                 } else {
                     game()
                 }

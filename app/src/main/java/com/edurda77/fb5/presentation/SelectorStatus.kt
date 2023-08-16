@@ -23,7 +23,9 @@ fun SelectorStatus (
             )
         }
         is ApplicationStatus.Succsess -> {
-            WebScreen()
+            WebScreen(
+                url = result.url
+            )
         }
     }
 }
