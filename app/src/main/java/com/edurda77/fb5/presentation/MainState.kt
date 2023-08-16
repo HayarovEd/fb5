@@ -2,5 +2,5 @@ package com.edurda77.fb5.presentation
 
 data class MainState(
     val answer:String = "",
-    val status: ApplicationStatus = ApplicationStatus.Mock
+    val status: ApplicationStatus = ApplicationStatus.Loading
 )

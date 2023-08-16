@@ -15,7 +15,7 @@ fun SelectorStatus (
         ApplicationStatus.Mock -> {
             MockScreen(
                 content = state.value.answer,
-                onClick = { viewModel.setUnswer() }
+                onClick = { viewModel.setAnswer() }
             )
         }
         is ApplicationStatus.Succsess -> TODO()
