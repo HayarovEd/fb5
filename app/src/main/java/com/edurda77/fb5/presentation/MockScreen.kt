@@ -9,6 +9,7 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,12 +22,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.edurda77.fb5.R
+import com.edurda77.fb5.ui.theme.back1
+import com.edurda77.fb5.ui.theme.back2
+import com.edurda77.fb5.ui.theme.back3
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -37,9 +42,15 @@ fun MockScreen(
 ) {
     val visible: MutableState<Boolean> = remember { mutableStateOf(false) }
     val density = LocalDensity.current
+    val gradientBrush = Brush.verticalGradient(
+        colors = listOf(back1, back2, back3, back2, back1),
+        startY = 0f,
+        endY = Float.POSITIVE_INFINITY
+    )
     Box(
         modifier = modifier
             .fillMaxSize()
+            .background(brush = gradientBrush)
             .padding(10.dp)
     ) {
         AnimatedVisibility(
