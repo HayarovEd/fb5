@@ -1,4 +1,4 @@
-package com.edurda77.fb5
+package apex.play.time
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

@@ -1,4 +1,4 @@
-package com.edurda77.fb5.ui.theme
+package apex.play.time.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

@@ -4,14 +4,15 @@ plugins {
    // id ("com.google.gms.google-services")
     id ("kotlin-kapt")
     id ("dagger.hilt.android.plugin")
+    id("com.google.gms.google-services")
 }
 
 android {
-    namespace = "com.edurda77.fb5"
+    namespace = "apex.play.time"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.edurda77.fb5"
+        applicationId = "apex.play.time"
         minSdk = 21
         targetSdk = 34
         versionCode = 1
@@ -60,8 +61,10 @@ dependencies {
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
+    //noinspection GradleCompatible
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation("com.google.firebase:firebase-config-ktx:21.4.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -79,10 +82,7 @@ dependencies {
     kapt ("com.google.dagger:hilt-compiler:2.45")
     implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
 
-    /*implementation ("com.facebook.android:facebook-android-sdk:5.0.0")
-    implementation ("com.google.android.gms:play-services-ads-identifier:18.0.1")
-    implementation ("com.google.android.gms:play-services-base:18.2.0")
-    implementation ("com.google.android.gms:play-services-analytics:18.0.2")*/
+
 
 }
 

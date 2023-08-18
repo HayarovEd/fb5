@@ -1,4 +1,4 @@
-package com.edurda77.fb5.presentation
+package apex.play.time.presentation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -28,10 +28,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.edurda77.fb5.R
-import com.edurda77.fb5.ui.theme.back1
-import com.edurda77.fb5.ui.theme.back2
-import com.edurda77.fb5.ui.theme.back3
+import apex.play.time.R
+import apex.play.time.ui.theme.back1
+import apex.play.time.ui.theme.back2
+import apex.play.time.ui.theme.back3
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable

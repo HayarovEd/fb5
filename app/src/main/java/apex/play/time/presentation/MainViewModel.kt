@@ -1,10 +1,15 @@
-package com.edurda77.fb5.presentation
+package apex.play.time.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.edurda77.fb5.data.unswers
-import com.edurda77.fb5.domain.Keeper
-import com.edurda77.fb5.domain.Service
+import apex.play.time.data.unswers
+import apex.play.time.domain.Keeper
+import apex.play.time.domain.Service
+import apex.play.time.presentation.ApplicationStatus.Error
+import apex.play.time.presentation.ApplicationStatus.Mock
+import apex.play.time.presentation.ApplicationStatus.Succsess
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,7 +25,7 @@ class MainViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     init {
-        //getFromLocal()
+        getFromLocal()
     }
 
     private fun getFromLocal(
@@ -31,7 +36,7 @@ class MainViewModel @Inject constructor(
             if (!pathUrl.isNullOrEmpty()) {
                 if (checkedInternetConnection) {
                     _state.value.copy(
-                        status = ApplicationStatus.Succsess(url = pathUrl)
+                        status = Succsess(url = pathUrl)
                     )
                         .updateStateUI()
 
@@ -40,7 +45,7 @@ class MainViewModel @Inject constructor(
                 }
             } else {
                 if (checkedInternetConnection) {
-                    /*val remoteConfig = FirebaseRemoteConfig.getInstance()
+                    val remoteConfig = FirebaseRemoteConfig.getInstance()
                     val configSettings = FirebaseRemoteConfigSettings.Builder()
                         .setMinimumFetchIntervalInSeconds(3600)
                         .build()
@@ -59,7 +64,7 @@ class MainViewModel @Inject constructor(
                                         game()
                                     } else {
                                         _state.value.copy(
-                                            status = ApplicationStatus.Succsess(url = resultUrl)
+                                            status = Succsess(url = resultUrl)
                                         )
                                             .updateStateUI()
 
@@ -70,7 +75,7 @@ class MainViewModel @Inject constructor(
                                             game()
                                         } else {
                                             _state.value.copy(
-                                                status = ApplicationStatus.Succsess(url = resultUrl)
+                                                status = Succsess(url = resultUrl)
                                             )
                                                 .updateStateUI()
 
@@ -80,11 +85,11 @@ class MainViewModel @Inject constructor(
 
                             } else {
                                 _state.value.copy(
-                                    status = ApplicationStatus.Error(error = p0.result.toString())
+                                    status = Error(error = p0.result.toString())
                                 )
                                     .updateStateUI()
                             }
-                        }*/
+                        }
                 } else {
                     game()
                 }
@@ -95,7 +100,7 @@ class MainViewModel @Inject constructor(
     private fun game() {
 
         _state.value.copy(
-            status = ApplicationStatus.Mock
+            status = Mock
         )
             .updateStateUI()
     }

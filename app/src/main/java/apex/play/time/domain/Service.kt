@@ -1,4 +1,4 @@
-package com.edurda77.fb5.domain
+package apex.play.time.domain
 
 interface Service {
     fun checkedInternetConnection(): Boolean

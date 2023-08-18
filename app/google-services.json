@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "487086254468",
+    "project_id": "plhed-2db2a",
+    "storage_bucket": "plhed-2db2a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:487086254468:android:4c248f083cb014adb195d1",
+        "android_client_info": {
+          "package_name": "apex.play.time"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "487086254468-cvgc4scjcmphao6s5rl0e89v52muq7er.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB--MaacZ8z_cGCGH-FMAU6y8SNnk4Q3LU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "487086254468-cvgc4scjcmphao6s5rl0e89v52muq7er.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

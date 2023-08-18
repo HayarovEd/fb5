@@ -1,4 +1,4 @@
-package com.edurda77.fb5.data
+package apex.play.time.data
 
 import android.app.Application
 import android.content.Context
@@ -8,7 +8,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.BatteryManager
 import android.os.Build
-import com.edurda77.fb5.domain.Service
+import apex.play.time.domain.Service
 import java.util.Locale
 import javax.inject.Inject
 

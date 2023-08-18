@@ -1,4 +1,4 @@
-package com.edurda77.fb5.domain
+package apex.play.time.domain
 
 interface Keeper {
     fun getSharedUrl(): String?
