@@ -23,6 +23,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -42,17 +44,22 @@ fun MockScreen(
 ) {
     val visible: MutableState<Boolean> = remember { mutableStateOf(false) }
     val density = LocalDensity.current
-    val gradientBrush = Brush.verticalGradient(
+    /*val gradientBrush = Brush.verticalGradient(
         colors = listOf(back1, back2, back3, back2, back1),
         startY = 0f,
         endY = Float.POSITIVE_INFINITY
-    )
+    )*/
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(brush = gradientBrush)
-            .padding(10.dp)
+            .background(color = Color.Black)
+            //.padding(10.dp)
     ) {
+        Image(
+            modifier = modifier
+                .fillMaxSize(),
+            painter = painterResource(id = R.drawable.background),
+            contentDescription = "")
         AnimatedVisibility(
             modifier = modifier.align(alignment = Alignment.Center),
             visible = visible.value,
@@ -87,6 +94,7 @@ fun MockScreen(
         Button(
             modifier = modifier
                 .fillMaxWidth()
+                .padding(10.dp)
                 .align(alignment = Alignment.BottomCenter),
             onClick = {
                 if (visible.value) {
