@@ -16,4 +16,10 @@ class KeeperImpl @Inject constructor(
     override fun setSharedUrl(url:String) {
         sharedPref.edit().putString(URL_SETTINGS, url).apply()
     }
+
+    override fun getSharedTo(): Boolean = sharedPref.getBoolean(TO_SETTINGS, false)
+
+    override fun setSharedTo(to:Boolean) {
+        sharedPref.edit().putBoolean(TO_SETTINGS, to).apply()
+    }
 }

